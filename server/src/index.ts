@@ -2,24 +2,21 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { connectDatabase } from "./database";
+import { connect } from "http2";
+const PORT = 8000;
 
-jwt.generate()
 
-
-const app = express()
+const app = express();
 
 
 app.get('/' , () => {
-    console.log("the server is listening on the port")
+    console.log("the server is listening on the port");
 })
 
 
 
-app.listen('/home' , (req:any , res:any) =>  () => any{
+
+app.listen(PORT , () => {
     connectDatabase();
-    res.send
+    console.log(`server is running on port ${PORT}`)
 })
-
-
-
-

@@ -1,13 +1,14 @@
-
-mongodb+srv://aryaanandpathak30_db_user:QEK5oAPeniMSPj6J@cluster0.gmevhkm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-
-
-
 import dotenv from "dotenv"
-import mongoose from "mongoose"
+import mongoose, { mongo } from "mongoose"
 dotenv.config()
 
-const mongodbUri : any = process.env.MONGODB_URI
+const mongodbUri  = process.env.MONGODB_URI as string
+
+if(!mongodbUri){
+    console.log("the uri is not correctly defined!")
+}
+
+
 
 
 export async function connectDatabase(){
