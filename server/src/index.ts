@@ -25,6 +25,7 @@ app.get('/' , () => {
 // now how do you find the relevant tweets 
 // how do i find the top 5 more relevant tweets 
 // vector databases embeddings
+// 500 iitjee problems 
 
 
 
