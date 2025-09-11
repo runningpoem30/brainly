@@ -15,6 +15,18 @@ app.get('/' , () => {
 
 
 
+// twitter link , youtube video links , blogs
+// wants to query the knowledge base  - what is trump's instance on h1b 
+// among the thosand of entries
+// it will send it to http and it will send to gpt . 
+// you can get the context from the knowledge base 
+// assume the full contents of the tweeti. stored over there 
+
+// now how do you find the relevant tweets 
+// how do i find the top 5 more relevant tweets 
+// vector databases embeddings
+
+
 
 app.listen(PORT , () => {
     connectDatabase();
