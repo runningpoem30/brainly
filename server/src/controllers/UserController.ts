@@ -1,15 +1,34 @@
 import { UserModel } from "../models/UserModel";
 import bcrypt from "bcrypt"
-import zod from "zod"
+import {z} from "zod"
 
 async function signUp(req : any  ,res : any ){
 
 
     //doing the zod validation , hashing the password
+    
 
+    // it should be an object 
+    // email should be a string , password should be a string , username should be a string
+    
+
+    const requiredBody = z.object({
+        email : z.string().email(),
+        username : z.string(),
+        password : z.string().min(8)
+    })
+
+    // parsing the data 
+
+    const {success , error} = requiredBody.safeParse(req.body)
+    if(!success){
+      res.json({
+        message : "incorrect format"
+      })
+    }
     
     const {email , username , password } = req.body
-    const hashedPassword = bcrypt.hash(password , 10)
+    const hashedPassword = await  bcrypt.hash(password , 10)
     
 
 
@@ -18,3 +37,4 @@ async function signUp(req : any  ,res : any ){
       email :  email  , username : username , password : hashedPassword
    })
 }
+
