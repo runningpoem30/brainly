@@ -1,8 +1,9 @@
 import { UserModel } from "../models/UserModel";
 import bcrypt from "bcrypt"
 import {z} from "zod"
+import { Request , Response } from "express";
 
-async function signUp(req : any  ,res : any ){
+export async function signUp(req : Request , res : Response ){
 
 
     //doing the zod validation , hashing the password
@@ -20,14 +21,17 @@ async function signUp(req : any  ,res : any ){
 
     // parsing the data 
 
-    const {success , error} = requiredBody.safeParse(req.body)
-    if(!success){
-      res.json({
-        message : "incorrect format"
+
+    //validating
+    const parsed = requiredBody.safeParse(req.body);
+    if(!parsed.success){
+     return res.json({
+        message : "incorrect format" , 
+        errors : parsed.error
       })
     }
     
-    const {email , username , password } = req.body
+    const {email , username , password } = parsed.data
     const hashedPassword = await  bcrypt.hash(password , 10)
     
 
