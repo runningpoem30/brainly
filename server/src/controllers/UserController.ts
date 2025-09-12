@@ -71,7 +71,6 @@ export async function signUp(req : Request , res : Response ){
 
 
 
-
 export async function signIn(req : Request , res : Response){
     try{
         const { username , password , email } = req.body;
