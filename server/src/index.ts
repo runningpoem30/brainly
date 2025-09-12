@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { connectDatabase } from "./database";
 import userRoutes from "./routes/UserRoutes";
+import { configDotenv } from "dotenv";
 
 const PORT = 8000;
 

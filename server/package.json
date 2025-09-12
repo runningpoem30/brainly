@@ -7,18 +7,20 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon dist/index.js",
     "dev": "nodemon --exec ts-node src/index.ts"
-
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@getbrevo/brevo": "^3.0.1",
+    "@sendinblue/client": "^3.3.1",
     "@types/bcrypt": "^6.0.0",
     "bcrypt": "^6.0.0",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
     "mongoose": "^8.18.1",
+    "sib-api-v3-sdk": "^8.5.0",
     "typescript": "^5.9.2",
     "zod": "^4.1.8"
   },
