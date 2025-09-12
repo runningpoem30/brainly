@@ -1,7 +1,6 @@
-import express from "express";
+
 import { Router } from "express";
 const userRoutes = Router()
-const app = express();
 import { signUp } from "../controllers/UserController";
 
 

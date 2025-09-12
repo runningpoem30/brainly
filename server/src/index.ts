@@ -3,11 +3,11 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { connectDatabase } from "./database";
 import userRoutes from "./routes/UserRoutes";
-import { connect } from "http2";
+
 const PORT = 8000;
 
-
 const app = express();
+app.use(express.json());
 
 app.use('/api/v1/user' , userRoutes)
 app.get('/' , () => {
