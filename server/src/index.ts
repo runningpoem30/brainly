@@ -2,13 +2,14 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { connectDatabase } from "./database";
+import userRoutes from "./routes/UserRoutes";
 import { connect } from "http2";
 const PORT = 8000;
 
 
 const app = express();
 
-
+app.use('/api/v1/user/' , userRoutes)
 app.get('/' , () => {
     console.log("the server is listening on the port");
 })
