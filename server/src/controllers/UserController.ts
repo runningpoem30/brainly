@@ -5,7 +5,6 @@ import { Request , Response } from "express";
 import { error } from "console";
 
 export async function signUp(req : Request , res : Response ){
-
  try {
         const requiredBody = z.object({
         email : z.email(),
@@ -16,21 +15,22 @@ export async function signUp(req : Request , res : Response ){
         .regex(/[a-z]/ , "Password must contain atleast one lower case")
         .regex(/[^A-Za-z0-9]/ , "Password. must contain atleast one special charcter")
     })
-
     const parsed = requiredBody.safeParse(req.body);
-
     if(!parsed.success){
      return res.status(400).json({
         message : "Error Signing up the user" , 
         errors : parsed.error.format()
       })
     }
-    
     const {email , username , password } = parsed.data
-    const hashedPassword = await  bcrypt.hash(password , 10)
-    
+    const user = await UserModel.findOne({email})
 
-    //we are learning about the input validation 
+
+   if(user){
+    return res.status(400).send({success : false , message : "user already exists"})
+   }
+    const hashedPassword = await  bcrypt.hash(password , 10)
+ 
    const newUser  = await UserModel.create({
       email :  email  , username : username , password : hashedPassword
    })
@@ -43,10 +43,22 @@ export async function signUp(req : Request , res : Response ){
  }
  catch(err){
     res.status(400).json({
-        message : err
+       message : 'Error Signing up the user',
+       error : err
     })
  }
+}
 
-   
+
+export async function signIn(req : Request , res : Response){
+    try{
+        const { username , password , email } = req.body;
+
+    }
+    catch(err){
+        res.status(400).json({
+            message : "Invalid credentials"
+        })
+    }
 }
 
