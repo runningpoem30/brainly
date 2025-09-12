@@ -1,8 +1,12 @@
 import { UserModel } from "../models/UserModel";
 import bcrypt from "bcrypt"
-import {success, z} from "zod"
+import {string, success, z} from "zod"
 import { Request , Response } from "express";
 import { error } from "console";
+import { sendMail } from "../services/EmailServices";
+import jwt from "jsonwebtoken"
+import dotenv from "dotenv"
+dotenv.config()
 
 export async function signUp(req : Request , res : Response ){
  try {
@@ -34,11 +38,27 @@ export async function signUp(req : Request , res : Response ){
    const newUser  = await UserModel.create({
       email :  email  , username : username , password : hashedPassword
    })
+   console.log(process.env.ACCESS_TOKEN_KEY)
+
+    const secret = process.env.ACCESS_TOKEN_KEY
+    if(!secret){
+        throw new Error("jwt environment vairable is not defined")
+    }
+
+    const verificationToken = jwt.sign(
+      { userId: newUser._id },
+       secret,
+      { expiresIn: "15m" }
+    );
+
+  const url = `${process.env.FRONTEND_URL}/api/v1/user/verify/${verificationToken}`
+
+  await sendMail(email , "Please check your email" , url)
 
    res.status(200).json({
     success : true ,
     error : false ,
-    message : "user successfully signed up "
+    message : "user successfully signed up . please check your email"
    });
  }
  catch(err){
@@ -48,6 +68,8 @@ export async function signUp(req : Request , res : Response ){
     })
  }
 }
+
+
 
 
 export async function signIn(req : Request , res : Response){
@@ -62,6 +84,3 @@ export async function signIn(req : Request , res : Response){
     }
 }
 
-
-
-//xsmtpsib-6d36e4da288ffdb86e80e627d876ca7367f65b4a79100d9419d141de80ec3988-OhfAjvVr0nq6dUkF
