@@ -33,8 +33,3 @@ export async function sendMail(receipient : any , subject:string , url:string){
 }
 
 
-
-
-// okay so now the transporter works , i have to basically create a fucntion now to help able to send emails to different users , ill call that function in the signup page 
-// verify()
-

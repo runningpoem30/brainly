@@ -4,11 +4,17 @@ import {string, success, z} from "zod"
 import { Request , Response } from "express";
 import { error } from "console";
 import { sendMail } from "../services/EmailServices";
+import {OAuth2Client} from "google-auth-library"
+import { configDotenv } from "dotenv";
+import cors from "cors"
+
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
 dotenv.config()
 
+const client = new OAuth2Client(process.env.CLIENT_ID);
 export async function signUp(req : Request , res : Response ){
+    
  try {
         const requiredBody = z.object({
         email : z.email(),
@@ -68,6 +74,21 @@ export async function signUp(req : Request , res : Response ){
     })
  }
 }
+
+
+export async function googleAuth(req : Request , res : Response){
+    try {
+
+    }
+    catch{
+
+    }
+}
+
+
+
+
+
 
 
 
