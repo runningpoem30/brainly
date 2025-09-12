@@ -7,21 +7,22 @@ import { error } from "console";
 export async function signUp(req : Request , res : Response ){
 
  try {
-         const requiredBody = z.object({
+        const requiredBody = z.object({
         email : z.email(),
         username : z.string().min(6 , "Username must be atleast 6 characters long"),
         password : z.string()
         .min(8 , "Password must be atleast 8 characters long")
         .regex(/[A-Z]/ , "Password must contain atleast one upper case" )
         .regex(/[a-z]/ , "Password must contain atleast one lower case")
-        .regex(/[])
+        .regex(/[^A-Za-z0-9]/ , "Password. must contain atleast one special charcter")
     })
 
     const parsed = requiredBody.safeParse(req.body);
+
     if(!parsed.success){
-     return res.json({
-        message : "incorrect format" , 
-        errors : parsed.error
+     return res.status(400).json({
+        message : "Error Signing up the user" , 
+        errors : parsed.error.format()
       })
     }
     
