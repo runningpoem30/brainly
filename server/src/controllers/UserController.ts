@@ -143,6 +143,9 @@ export async function googleAuthUsernameAdd(req : Request , res:Response){
         }
 
         const user = await UserModel.findOne({id : userId})
+        if(!user){
+            return res.status(404).json({message : "user not found"})
+        }
         const requiredBody = z.object({
             username : z.string().min(6)
         })
@@ -163,7 +166,11 @@ export async function googleAuthUsernameAdd(req : Request , res:Response){
         onBoarded : true
     })
 
-
+   return res.status(200).json({
+    success: true , 
+    message : "user updated successfully" , 
+    user : updatedUser
+   })
 
     }
     catch(err){
@@ -175,8 +182,16 @@ export async function googleAuthUsernameAdd(req : Request , res:Response){
 }
 
 
-
-
+export async function verifyUser(req : Request, res : Response){
+    try{
+        const params = req.params
+    }
+    catch(err){
+        return res.status(400).json({
+            message : "error verifying user "
+        })
+    }
+}
 
 
 
