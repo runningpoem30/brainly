@@ -11,6 +11,7 @@ import cookieParser from "cookie-parser"
 
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
+import { required } from "zod/v4/core/util.cjs";
 dotenv.config()
 
 const client = new OAuth2Client(process.env.CLIENT_ID);
@@ -87,39 +88,38 @@ export async function googleAuth(req : Request , res : Response){
             idToken : token,
             audience : process.env.CLIENT_ID
         })
-
         const payload = ticket.getPayload();
-
         if(!payload) return res.status(400).json({message : "invalid token"});
-
-        const email = payload.email;
-
+         const email = payload.email;
         let user = await UserModel.findOne({email})
-
         if(!user){
             user = await UserModel.create({
                 email : email ,
                 password : null
             })
         }
-
-
     const secret = process.env.ACCESS_TOKEN_KEY
     if(!secret){
         throw new Error("jwt environment vairable is not defined")
     }
-
     const verificationToken = jwt.sign(
       { userId: user._id },
        secret,
-      { expiresIn: "7d" }
+      { expiresIn: "15m" }
     ) 
+
+    res.cookie("access_token" , verificationToken , {
+        httpOnly : true ,
+        maxAge : 15 * 60 * 1000
+    })
  
     res.status(200).json({
         success : true ,
         token : verificationToken , 
         message : 'Successfully signed up the user'
     })
+
+
     }
     catch{
         return res.status(403).json({
@@ -134,6 +134,36 @@ export async function googleAuth(req : Request , res : Response){
 //
 export async function googleAuthUsernameAdd(req : Request , res:Response){
     try{
+        const { userId } = (req as any).userId;
+        if(!userId){
+            return res.status(404).json({
+                succes : false , 
+                message  : "please provide token"
+            })
+        }
+
+        const user = await UserModel.findOne({id : userId})
+        const requiredBody = z.object({
+            username : z.string().min(6)
+        })
+
+
+        const parsed = await requiredBody.safeParse(req.body);
+
+     if(!parsed.success){
+      return res.status(400).json({
+        message : "Error Signing up the user" , 
+        errors : parsed.error.format()
+      })
+    }
+    const {username} = parsed.data
+    const updatedUser = await UserModel.updateOne({userId,
+        username : username,
+        isVerified : true ,
+        onBoarded : true
+    })
+
+
 
     }
     catch(err){
