@@ -19,8 +19,7 @@ async function setUserNameMiddleware(req: Request, res: Response, next: NextFunc
   const secretKey = process.env.ACCESS_TOKEN_KEY as string
   try{
     const decoded = jwt.verify(token , secretKey) as JwtPayload
-    //@ts-ignore
-    req.userId = decoded.userId
+    (req as any).userId = decoded.userId
 
     next();
   }
