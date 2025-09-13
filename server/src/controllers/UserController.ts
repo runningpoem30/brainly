@@ -7,6 +7,7 @@ import { sendMail } from "../services/EmailServices";
 import {OAuth2Client} from "google-auth-library"
 import { configDotenv } from "dotenv";
 import cors from "cors"
+import cookieParser from "cookie-parser"
 
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
@@ -113,7 +114,7 @@ export async function googleAuth(req : Request , res : Response){
        secret,
       { expiresIn: "7d" }
     ) 
-
+ 
     res.status(200).json({
         success : true ,
         token : verificationToken , 
@@ -129,8 +130,8 @@ export async function googleAuth(req : Request , res : Response){
 }
 
 
-
-
+//adding the userNameField after google auth 
+//
 export async function googleAuthUsernameAdd(req : Request , res:Response){
     try{
 
