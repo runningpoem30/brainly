@@ -1,3 +1,4 @@
+import { timeStamp } from "console";
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
@@ -9,13 +10,23 @@ const userSchema = new mongoose.Schema({
     username :  {
         type : String , 
         unique : true , 
-        required : true 
+        required : false
     },
     password : { 
         type : String
-    }
-
-})
+    },
+    isVerified : {
+        type : Boolean ,
+        default : false
+    },
+    onBoarded : {
+        type : Boolean , 
+        default : false
+    },
+},{
+    timestamps : true,
+}
+)
 
 
 export const UserModel =  mongoose.model("User" , userSchema);

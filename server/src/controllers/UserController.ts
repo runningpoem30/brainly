@@ -13,8 +13,10 @@ import dotenv from "dotenv"
 dotenv.config()
 
 const client = new OAuth2Client(process.env.CLIENT_ID);
+
+
 export async function signUp(req : Request , res : Response ){
-    
+
  try {
         const requiredBody = z.object({
         email : z.email(),
@@ -44,7 +46,6 @@ export async function signUp(req : Request , res : Response ){
    const newUser  = await UserModel.create({
       email :  email  , username : username , password : hashedPassword
    })
-   console.log(process.env.ACCESS_TOKEN_KEY)
 
     const secret = process.env.ACCESS_TOKEN_KEY
     if(!secret){
@@ -76,15 +77,71 @@ export async function signUp(req : Request , res : Response ){
 }
 
 
+///adding the google Auth signup here 
 export async function googleAuth(req : Request , res : Response){
     try {
+        const {token} = req.body;
 
+        const ticket = await client.verifyIdToken({
+            idToken : token,
+            audience : process.env.CLIENT_ID
+        })
+
+        const payload = ticket.getPayload();
+
+        if(!payload) return res.status(400).json({message : "invalid token"});
+
+        const email = payload.email;
+
+        let user = await UserModel.findOne({email})
+
+        if(!user){
+            user = await UserModel.create({
+                email : email ,
+                password : null
+            })
+        }
+
+
+    const secret = process.env.ACCESS_TOKEN_KEY
+    if(!secret){
+        throw new Error("jwt environment vairable is not defined")
+    }
+
+    const verificationToken = jwt.sign(
+      { userId: user._id },
+       secret,
+      { expiresIn: "7d" }
+    ) 
+
+    res.status(200).json({
+        success : true ,
+        token : verificationToken , 
+        message : 'Successfully signed up the user'
+    })
     }
     catch{
-
+        return res.status(403).json({
+            success : false ,
+            message : "Error creating user"
+        })
     }
 }
 
+
+
+
+export async function googleAuthUsernameAdd(req : Request , res:Response){
+    try{
+
+    }
+    catch(err){
+        res.status(403).send({
+            success : false , 
+            message : "error adding username"
+        })
+    }
+}
 
 
 
