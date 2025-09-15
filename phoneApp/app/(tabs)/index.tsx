@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-
+import "../global.css"
 export default function Index() {
   return (
     <View
@@ -7,9 +7,14 @@ export default function Index() {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+          display: "flex",
+          width: "100%",
+          height : "100%"
       }}
     >
-      <Text className="text-2xl font-bold ">WELCOME!!</Text>
+        <View className="w-40 h-32 bg-black">
+            <Text>Hello</Text>
+        </View>
     </View>
   );
 }
