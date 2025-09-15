@@ -308,7 +308,4 @@ export async function signIn(req : Request , res : Response){
 // updating the profile - putting avatar 
 // logging out 
 // refresh tokens  
-// 
 
-
-/// i wont fucking open chat gpt in this entire projectdddd
