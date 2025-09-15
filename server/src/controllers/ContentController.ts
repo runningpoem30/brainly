@@ -14,7 +14,7 @@ export async function createMemory(req : Request , res : Response){
             message : "you are not verified"
         })
     }
-     
+
     const content = await ContentModel.findOneAndUpdate(
         {title : title , userId : userId},
         {
@@ -38,7 +38,6 @@ export async function createMemory(req : Request , res : Response){
  }
 }
 
-
 export async function getMemory(req:Request , res : Response){
     try{
         const userId  = (req as any).userId
@@ -58,11 +57,62 @@ export async function getMemory(req:Request , res : Response){
     }
 }
 
+export async function getMemoryByTitle(req : Request , res:Response){
+    try{
+        const contentId = req.params.contentId
+        console.log('tis is content id ' + contentId)
+        const userId = (req as any).userId
+        console.log('this is userid' , userId)
+
+        const content = await ContentModel.find({
+            _id : contentId , 
+            userId : userId
+        })
+
+        console.log(content)
 
 
-// also getting a specific memory 
-// querying by title also 
-// deleting a memory 
+        res.status(200).json({
+            success : true , 
+            message : "successfully fetched the content",
+            data : content
+        })
+    }
+
+    catch(err){
+       return res.status(400).json({
+        success : false , 
+        error : true ,
+        message : "error getting the memory"
+       })
+    }
+}
+
+export async function getMemoryByTitleBySearch(req : Request , res : Response){
+    try{
+        const title = req.body.title;
+        const userId = (req as any).userId
+
+
+        const content = await ContentModel.find({
+            title : title,
+            userId : userId
+        })
+
+        res.status(200).json({
+            message : "successfully fetched the content",
+            data : content
+        })
+    }
+    catch(err){
+        console.log(err)
+        res.status(400).json({
+            success : false , 
+            error : true ,
+            message : " error fetching the content "
+        })
+    }
+}
 
 
 export async function addImages(req : Request , res: Response){
