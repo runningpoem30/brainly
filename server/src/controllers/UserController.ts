@@ -1,6 +1,6 @@
 import { UserModel } from "../models/UserModel";
 import bcrypt from "bcrypt"
-import {string, success, z} from "zod"
+import {object, string, success, z} from "zod"
 import { Request , Response } from "express";
 import { error } from "console";
 import { sendMail } from "../services/EmailServices";
@@ -8,10 +8,15 @@ import {OAuth2Client} from "google-auth-library"
 import { configDotenv } from "dotenv";
 import cors from "cors"
 import cookieParser from "cookie-parser"
+import express from "express"
+
+const app = express()
+app.use(cookieParser())
 
 import jwt, { JwtPayload } from "jsonwebtoken"
 import dotenv from "dotenv"
 import { required } from "zod/v4/core/util.cjs";
+import { isObjectIdOrHexString } from "mongoose";
 dotenv.config()
 
 const client = new OAuth2Client(process.env.CLIENT_ID);
@@ -223,6 +228,7 @@ export async function verifyUser(req : Request, res : Response){
 
         res.status(200).json({
             success: true , 
+            message : "user is verified, please proceed to login page"
             
         })
 
@@ -239,46 +245,59 @@ export async function signIn(req : Request , res : Response){
     try{
         const { password , email } = req.body;
 
-        const user = await UserModel.findOne({email});
+        const user:any = await UserModel.findOne({email});
+
+        const checkPassword = await bcrypt.compare(password , user.password)
+  
+        if (!checkPassword) {
+          return res.status(400).json({ message: "Invalid Credentials" });
+        }
+
 
         if(!user){
             res.status(200).json({
                 message : "cannot find the user"
             })
         }
+
+        console.log(user._id)
         
         
         const secret = process.env.ACCESS_TOKEN_KEY as string
-        if(secret){
+        if(!secret){
             return res.status(400).json({
                 message : "incorrect key"
             })
         }
 
       const verificationToken = jwt.sign(
-          { userId: user._id },
+          { userId: user._id},
            secret,
          { expiresIn: "15d" }
        );
 
        
-
     res.cookie("access_token" , verificationToken , {
         httpOnly : true ,
         maxAge : 15 * 60 *  60 * 1000
     })
 
 
+    localStorage.setItem('access_token' , verificationToken)
+
+
     return res.status(200).json({
         success : true , 
-        message : "User successfully logged in"
-    })
- 
+        message : "User successfully logged in",
+        access_token : verificationToken
+    }) 
 
     }
     catch(err){
+        console.log(err)
         res.status(400).json({
-            message : "Invalid credentials"
+            message : "Invalid credentials",
+            error  : err
         })
     }
 }
