@@ -1,1 +1,0 @@
-{"root":["./src/database.ts","./src/index.ts","./src/middleware.ts","./src/controllers/usercontroller.ts","./src/models/usermodel.ts","./src/routes/contentroutes.ts","./src/routes/share.ts","./src/routes/userroutes.ts","./src/services/emailservices.ts"],"version":"5.9.2"}
