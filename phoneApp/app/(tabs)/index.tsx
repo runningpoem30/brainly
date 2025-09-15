@@ -12,6 +12,7 @@ export default function Index() {
           height : "100%"
       }}
     >
+        {/*hello*/}
         <View className="w-40 h-32 bg-black">
             <Text>Hello</Text>
         </View>
