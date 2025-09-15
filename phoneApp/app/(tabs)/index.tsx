@@ -9,7 +9,8 @@ export default function Index() {
         alignItems: "center",
           display: "flex",
           width: "100%",
-          height : "100%"
+          height : "100%",
+          backgroundColor: "#0F0E0E",
       }}
     >
         {/*hello*/}
