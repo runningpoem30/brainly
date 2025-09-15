@@ -7,6 +7,13 @@ export async function createMemory(req : Request , res : Response){
     const { title , link } = req.body;
     const userId = (req as any).userId;
 
+    if(!userId){
+        return res.status(400).json({
+            success : true , 
+            message : "you are not verified"
+        })
+    }
+
     const memory = await ContentModel.create({
         title : title , 
         link : link ,
@@ -25,4 +32,14 @@ export async function createMemory(req : Request , res : Response){
         message  : "error adding memory "
     })
  }
+}
+
+export async function addImages(req : Request , res: Response){
+    try{
+        const userId = (req as any).userId;
+
+    }
+    catch(err){
+
+    }
 }
