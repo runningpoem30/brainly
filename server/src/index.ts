@@ -2,6 +2,7 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { connectDatabase } from "./database";
+import memoryRoutes from "./routes/MemoryRoutes";
 import userRoutes from "./routes/UserRoutes";
 import { configDotenv } from "dotenv";
 
@@ -11,6 +12,8 @@ const app = express();
 app.use(express.json());
 
 app.use('/api/v1/user' , userRoutes)
+app.use('/api/v1/memory' , memoryRoutes)
+
 app.get('/' , () => {
     console.log("the server is listening on the port");
 })
