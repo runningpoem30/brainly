@@ -5,11 +5,12 @@ import { connectDatabase } from "./database";
 import memoryRoutes from "./routes/MemoryRoutes";
 import userRoutes from "./routes/UserRoutes";
 import { configDotenv } from "dotenv";
-
+import cookieParser from "cookie-parser";
 const PORT = 8000;
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser())
 
 app.use('/api/v1/user' , userRoutes)
 app.use('/api/v1/memory' , memoryRoutes)
