@@ -6,6 +6,7 @@ export async function createMemory(req : Request , res : Response){
  try{
     const { title , link } = req.body;
     const userId = (req as any).userId;
+    console.log('this is the user id ' +userId)
 
     if(!userId){
         return res.status(400).json({
@@ -13,11 +14,6 @@ export async function createMemory(req : Request , res : Response){
             message : "you are not verified"
         })
     }
-
-
-    // if the title already exists , push the link in that document 
-    // if it does not , create a new title and push then push the link 
-
      
     const content = await ContentModel.findOneAndUpdate(
         {title : title , userId : userId},
@@ -27,19 +23,10 @@ export async function createMemory(req : Request , res : Response){
         {upsert : true , new : true}
     )
 
-
-
-
-
-    // const memory = await ContentModel.create({
-    //     title : title , 
-    //     link : link ,
-    //     userId : userId
-    // })
-
     return res.status(200).json({
         success : true , 
-        message : "successfully added the memory"
+        message : "successfully added the memory",
+        data : content
     })
  }
  catch(err){
@@ -63,9 +50,7 @@ export async function getMemory(req:Request , res : Response){
             message : "successfully fetched all the content",
             data : content
         })
-
     }
-
     catch(err){
         res.status(400).json({
             message : "error getting your memories"
@@ -74,7 +59,9 @@ export async function getMemory(req:Request , res : Response){
 }
 
 
+
 // also getting a specific memory 
+// querying by title also 
 // deleting a memory 
 
 
