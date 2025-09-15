@@ -14,22 +14,28 @@ export async function createMemory(req : Request , res : Response){
         })
     }
 
-    const content = await ContentModel.find({
-        title
-    })
 
-    if(title){
-        return res.status(400).json({
-            message : "the title already exists , please create a new title"
-        })
-    }
+    // if the title already exists , push the link in that document 
+    // if it does not , create a new title and push then push the link 
 
-    
-    const memory = await ContentModel.create({
-        title : title , 
-        link : link ,
-        userId : userId
-    })
+     
+    const content = await ContentModel.findOneAndUpdate(
+        {title : title , userId : userId},
+        {
+            $addToSet : {link : link}
+        },
+        {upsert : true , new : true}
+    )
+
+
+
+
+
+    // const memory = await ContentModel.create({
+    //     title : title , 
+    //     link : link ,
+    //     userId : userId
+    // })
 
     return res.status(200).json({
         success : true , 
