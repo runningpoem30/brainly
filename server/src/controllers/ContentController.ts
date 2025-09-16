@@ -121,7 +121,7 @@ export async function addImages(req : Request , res: Response){
     try{
         const userId = (req as any).userId;
         const title = req.body;
-        const image = req.file; 
+        const image = (req as any).file; 
         console.log(image)
         
         const titleExists = await ContentModel.find({title : title})

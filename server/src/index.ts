@@ -2,7 +2,7 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { connectDatabase } from "./database";
-import memoryRoutes from "./routes/MemoryRoutes";
+import memoryRoutes from "./routes/ContentRoutes";
 import userRoutes from "./routes/UserRoutes";
 import { configDotenv } from "dotenv";
 import cookieParser from "cookie-parser";
