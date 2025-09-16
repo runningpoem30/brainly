@@ -6,7 +6,6 @@ import { uploadToCloudinary } from "../services/CloudinaryService";
 
 export async function createMemory(req : Request , res : Response){
  try{
-    const { title , link } = req.body;
     const userId = (req as any).userId;
     console.log('this is the user id ' +userId)
 
@@ -16,9 +15,28 @@ export async function createMemory(req : Request , res : Response){
             message : "you are not verified"
         })
     }
+    //alright this creates a new , but what if the user is inside of a particular content and wants to create a memory , for that we will fetch the contentId
+    const contentId = req.params.contentId || (req.body.contentId as string) || undefined
+    const { title , link } = req.body;
 
-    const content = await ContentModel.findOneAndUpdate(
-        {title : title , userId : userId},
+     if(!contentId && !title){
+        return res.status(400).json({message : "please provide contentid or title"})
+     }
+
+       let content;
+         if (contentId) {
+         content = await ContentModel.findOne({ _id: contentId, userId });
+        } else { 
+         content = await ContentModel.findOne({ title, userId });
+        }
+
+     if (!content) {
+      return res.status(404).json({ message: "Content not found for this user" });
+       }
+    
+
+    const finalContent = await ContentModel.findByIdAndUpdate(
+        content._id,
         {
             $addToSet : {link : link}
         },
@@ -28,7 +46,7 @@ export async function createMemory(req : Request , res : Response){
     return res.status(200).json({
         success : true , 
         message : "successfully added the memory",
-        data : content
+        data : finalContent
     })
  }
  catch(err){
@@ -141,9 +159,7 @@ export async function addImages(req : Request , res: Response){
          content = await ContentModel.findOne({ title, userId });
         }
 
-      
-
-        if (!content) {
+     if (!content) {
       return res.status(404).json({ message: "Content not found for this user" });
        }
       const result: any = await uploadToCloudinary(file.buffer);
@@ -163,6 +179,31 @@ export async function addImages(req : Request , res: Response){
             error : true , 
             success : false ,
             message : "failed to add image in the memory"
+        })
+    }
+}
+
+export async function deleteMemory(req : Request , res: Response){
+    try{
+        const userId = (req as any).userId;
+        if(!userId){
+            throw new Error("the user is not authenticated")
+        }
+
+        const contentId = req.params.contentId
+
+        const deleteContent = await ContentModel.findByIdAndDelete(contentId)
+
+        res.status(200).json({
+            success : true ,
+            message : "the memory is sucessfully deleted!"
+        })
+    }
+    catch(err){
+        res.status(400).json({
+            success : false ,
+            error : true ,
+            message : "error deleting the body"
         })
     }
 }
