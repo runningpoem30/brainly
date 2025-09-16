@@ -12,10 +12,5 @@ memoryRoutes.get('/get-content-by-title/:contentId' , setUserNameMiddleware,  ge
 memoryRoutes.get('/get-content-by-title-in-field' , setUserNameMiddleware , getMemoryByTitleBySearch)
 
 
-// memoryRoutes.get('/content')
-
-
-
-// memoryRoutes.delete('/content')
 
 export default memoryRoutes;

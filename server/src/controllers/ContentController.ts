@@ -1,6 +1,7 @@
 import { ContentModel } from "../models/ContentModel";
 import { Request, Response } from "express";
 import mongoose from "mongoose";
+import { v2 as cloudinary } from 'cloudinary'
 
 export async function createMemory(req : Request , res : Response){
  try{
