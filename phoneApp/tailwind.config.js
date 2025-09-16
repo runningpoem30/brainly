@@ -9,7 +9,11 @@ module.exports = {
                 primaryBlack: {
                     100:"#0F0E0E"
                 }
-            }
+            },
+            fontFamily: {
+                fustat: ["Fustat_400Regular"],
+                "fustat-bold": ["Fustat_700Bold"],
+            },
         },
     },
     plugins: [],
