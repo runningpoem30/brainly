@@ -22,7 +22,7 @@ const CTabBarIcon = ({ focused, icon }: any) => {
         >
             <View
                 style={{
-                    backgroundColor: focused ? "rgba(255,255,255,0.15)" : "transparent",
+                    backgroundColor: focused ? "#0F0E0E" : "transparent",
 
                     paddingVertical: 25,
                     paddingHorizontal : 30,
@@ -54,8 +54,8 @@ const _layout = () => {
         tabBarShowLabel: false,
             tabBarBackground: () => (
                 <BlurView
-                    intensity={30}
-                    tint="dark"
+                    intensity={90}
+                    tint="systemUltraThinMaterialDark"
                     style={{ flex: 1, borderRadius: 50 }}
                 />
             ),
@@ -70,11 +70,13 @@ const _layout = () => {
                 marginBottom: 20,
                 marginHorizontal: 20,
                 paddingHorizontal: 10,
-                backgroundColor: "rgba(255,255,255,0.1)",
+                backgroundColor: "rgba(255, 255, 255, 0.2)",
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-around",
                 overflow: "hidden",
+                borderWidth: 0.1,
+                borderColor: "#ffffff",
             },
 
         }}>
