@@ -16,8 +16,6 @@ export async function setUserNameMiddleware(req: Request, res: Response, next: N
   console.log(authHeader)
   //console.log(req.headers)
 
-
-
   if (req.cookies?.access_token) {
     token = req.cookies.access_token;
   } 
