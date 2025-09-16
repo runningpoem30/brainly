@@ -6,7 +6,6 @@ import { uploadToCloudinary } from "../services/CloudinaryService";
 
 export async function createMemory(req : Request , res : Response){
  try{
-    const { title , link } = req.body;
     const userId = (req as any).userId;
     console.log('this is the user id ' +userId)
 
@@ -16,9 +15,28 @@ export async function createMemory(req : Request , res : Response){
             message : "you are not verified"
         })
     }
+    //alright this creates a new , but what if the user is inside of a particular content and wants to create a memory , for that we will fetch the contentId
+    const contentId = req.params.contentId || (req.body.contentId as string) || undefined
+    const { title , link } = req.body;
 
-    const content = await ContentModel.findOneAndUpdate(
-        {title : title , userId : userId},
+     if(!contentId && !title){
+        return res.status(400).json({message : "please provide contentid or title"})
+     }
+
+       let content;
+         if (contentId) {
+         content = await ContentModel.findOne({ _id: contentId, userId });
+        } else { 
+         content = await ContentModel.findOne({ title, userId });
+        }
+
+     if (!content) {
+      return res.status(404).json({ message: "Content not found for this user" });
+       }
+    
+
+    const finalContent = await ContentModel.findByIdAndUpdate(
+        content._id,
         {
             $addToSet : {link : link}
         },
@@ -28,7 +46,7 @@ export async function createMemory(req : Request , res : Response){
     return res.status(200).json({
         success : true , 
         message : "successfully added the memory",
-        data : content
+        data : finalContent
     })
  }
  catch(err){
@@ -116,66 +134,77 @@ export async function getMemoryByTitleBySearch(req : Request , res : Response){
     }
 }
 
-
 export async function addImages(req : Request , res: Response){
     try{
         const userId = (req as any).userId;
-        const title = req.body;
-        const image = req.file; 
-        console.log(image)
-        
-        const titleExists = await ContentModel.find({title : title})
+        if (!userId) return res.status(401).json({ message: "Unauthorized" });
 
-        if(!titleExists){
-            return res.status(400).json({
-                message : "the memory doesnt exist , please create new "
-            })
+        const contentId = req.params.contentId || (req.body.contentId as string) || undefined
+        const title = (req.body.title as string) || undefined
+
+        if(!contentId && !title){
+            return res.status(400).json({message : "please provide contentid or title"})
         }
-            if (!image) {
-                return res.status(400).json({
-                    success: false,
-                    error: true,
-                    message: "No file uploaded",
-            });
-        }
-
-        const result:any = await uploadToCloudinary(image.buffer);
-
-        const updatedContent = await ContentModel.findOneAndUpdate({
-            title : title , userId : userId
-        }, {
-            $addToSet : {link : result.secure_url }
-         },
-        {
-         new : true
-         })
        
-         res.status(200).json({
-            success : true , 
-            data : updatedContent , 
-            message : "this is the updated memory"
-         })
-        
-        // firstly the user is on the website 
-        // he should be able to add images in a particular memory
-        // how does he fetch the specific memory 
-        // the user might get the memory by searching for a specific memory , in that case it becomes easy we can send that in the body , but what if he clicks on a memory , and then inside there is a button , and he presses that button and we need to fetch that memory's specific id ; how do we do this  in that case we need to fetch his id 
-        // but even when he searches for something , how will the request go ? like alright i cant send both the things at once , how wil that be handled on the frontend ? 
-        // and then we get the memory id 
-        // we also need to get the image link that needs to be saved 
-        // and then we push that link in that memory 
-        // and then it gets saved 
+         const file = req.file;
+         if (!file) {
+         return res.status(400).json({ message: "No file uploaded. Use field name 'image'." });
+         }
 
 
-        // but lets say the user is already inside a memory , how do we fetch the memory's id ? 
-        // and then we should be able to add 
-        // also the user might get the memory by searching for a specific memory 
+         let content;
+         if (contentId) {
+         content = await ContentModel.findOne({ _id: contentId, userId });
+        } else { 
+         content = await ContentModel.findOne({ title, userId });
+        }
+
+     if (!content) {
+      return res.status(404).json({ message: "Content not found for this user" });
+       }
+      const result: any = await uploadToCloudinary(file.buffer);
+
+    
+     const updated = await ContentModel.findByIdAndUpdate(
+      content._id,
+      { $addToSet: { link: result.secure_url } }, // adjust `images` field to your schema
+      { new: true }
+    );
+
+    return res.status(200).json({ success: true, data: updated });
     }
     catch(err){
-        res.status(200).json({
+        console.log(`this is what is causing the fucking error ${err}`)
+        res.status(400).json({
             error : true , 
             success : false ,
             message : "failed to add image in the memory"
         })
     }
 }
+
+export async function deleteMemory(req : Request , res: Response){
+    try{
+        const userId = (req as any).userId;
+        if(!userId){
+            throw new Error("the user is not authenticated")
+        }
+
+        const contentId = req.params.contentId
+
+        const deleteContent = await ContentModel.findByIdAndDelete(contentId)
+
+        res.status(200).json({
+            success : true ,
+            message : "the memory is sucessfully deleted!"
+        })
+    }
+    catch(err){
+        res.status(400).json({
+            success : false ,
+            error : true ,
+            message : "error deleting the body"
+        })
+    }
+}
+
