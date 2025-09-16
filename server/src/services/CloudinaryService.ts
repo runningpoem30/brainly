@@ -7,4 +7,4 @@ cloudinary.config({
     secure : true
 })
 
-cloudinary.uploader()
+export {cloudinary}
