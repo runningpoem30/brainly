@@ -15,7 +15,7 @@ export default function CardScroller() {
             <View style={styles.card} />
             <View style={styles.card} />
         </ScrollView>
-            <View style={styles.divider} />
+
         </View>
     );
 }
@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     container: {
         gap: 16,
         paddingVertical: 10,
+        width: "100%",
     },
     card: {
         width: 120,
