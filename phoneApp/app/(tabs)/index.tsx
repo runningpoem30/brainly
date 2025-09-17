@@ -1,10 +1,13 @@
-import {Text, View, StyleSheet} from "react-native";
+import {Text, View, StyleSheet, ScrollView} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import "../global.css"
 import { useFonts, Fustat_400Regular, Fustat_700Bold } from "@expo-google-fonts/fustat";
 import CardScroller from "@/components/CardScroller";
-import AppLoading from "expo-app-loading";
+import * as SplashScreen from 'expo-splash-screen';
+import MemoryDisplay from "@/components/Memorybase";
+import {useEffect} from "react";
 
+SplashScreen.preventAutoHideAsync();
 const styles = StyleSheet.create({
     textRegular: {
         fontFamily: "Fustat_400Regular",
@@ -16,15 +19,30 @@ const styles = StyleSheet.create({
         color: "white",
         fontSize: 32,
     },
+    divider: {
+        height: 0.5,
+        backgroundColor: "rgba(255,255,255,0.2)", // subtle white line
+        marginTop: 12,
+        marginHorizontal: -20,
+    },
 });
 export default function Index() {
     const [fontsLoaded] = useFonts({
         Fustat_400Regular,
         Fustat_700Bold,
     });
-    if (!fontsLoaded) {
-        return <AppLoading />;
-    }
+    useEffect(() => {
+        async function hideSplash() {
+            if (fontsLoaded) {
+                await SplashScreen.hideAsync();
+            }
+        }
+        hideSplash();
+    }, [fontsLoaded]);
+
+    // if (!fontsLoaded) {
+    //     return null; // render nothing until fonts are loaded
+    // }
   return (<SafeAreaView style={{ flex: 1 }}>
           <View className=""
       style={{
@@ -45,15 +63,15 @@ export default function Index() {
                 <Text style={styles.textRegular}>My </Text>
                 <Text style={styles.textBold}>Space</Text>
             </View>
+            <ScrollView vertical className="">
+                <CardScroller />
+                <View style={styles.divider} />
+                <MemoryDisplay/>
+            </ScrollView>
 
-            <CardScroller />
-            <CardScroller />
-            <CardScroller />
-            <CardScroller />
-            <CardScroller />
-            <CardScroller />
         </View>
     </View>
       </SafeAreaView>
   );
 }
+
