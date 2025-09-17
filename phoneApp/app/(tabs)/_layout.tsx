@@ -4,6 +4,12 @@ import {Stack, Tabs} from "expo-router";
 import "../global.css"
 import "@/assets/icons/home.png"
 import { BlurView } from "expo-blur";
+import { Dimensions } from "react-native";
+
+const { height, width } = Dimensions.get("window");
+const TAB_BAR_HEIGHT = height * 0.10; // 10% of screen height
+const ICON_SIZE = width * 0.07; // ~7% of screen width
+const PADDING = width * 0.05;
 const icons = {
     home: require("@/assets/icons/home.png"),
     search: require("@/assets/icons/search.png"),
@@ -12,21 +18,13 @@ const icons = {
 };
 const CTabBarIcon = ({ focused, icon }: any) => {
     return (
-        <View
-            style={{
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100%",
-                width: 60,
-            }}
-        >
+        <View style={{ justifyContent: "center", alignItems: "center", height: "100%" }}>
             <View
                 style={{
                     backgroundColor: focused ? "#0F0E0E" : "transparent",
-
-                    paddingVertical: 25,
-                    paddingHorizontal : 30,
-                    borderRadius: 30,
+                    paddingVertical: TAB_BAR_HEIGHT * 0.2,
+                    paddingHorizontal : TAB_BAR_HEIGHT * 0.3,
+                    borderRadius: ICON_SIZE, // rounded pill based on icon size
                     justifyContent: "center",
                     alignItems: "center",
                 }}
@@ -34,9 +32,9 @@ const CTabBarIcon = ({ focused, icon }: any) => {
                 <Image
                     source={icons[icon]}
                     style={{
-                        width: 30,
-                        height: 30,
-                        tintColor: focused ? "#fff" : "#fff",
+                        width: ICON_SIZE,
+                        height: ICON_SIZE,
+                        tintColor: focused ? "#fff" : "#aaa",
                     }}
                     resizeMode="contain"
                 />
@@ -44,6 +42,7 @@ const CTabBarIcon = ({ focused, icon }: any) => {
         </View>
     );
 };
+
 
 const _layout = () => {
   return (
@@ -55,7 +54,7 @@ const _layout = () => {
             tabBarBackground: () => (
                 <BlurView
                     intensity={90}
-                    tint="systemUltraThinMaterialDark"
+                    tint="dark"
                     style={{ flex: 1, borderRadius: 50 }}
                 />
             ),
@@ -64,20 +63,19 @@ const _layout = () => {
             alignItems: "center",
         },
             tabBarStyle: {
-                height:78,
+                height: TAB_BAR_HEIGHT, // dynamic
                 position: "absolute",
-                borderRadius: 50,
-                marginBottom: 20,
-                marginHorizontal: 20,
-                paddingHorizontal: 10,
-                backgroundColor: "rgba(255, 255, 255, 0.2)",
+                borderRadius: TAB_BAR_HEIGHT / 2, // keeps rounded look proportional
+                marginBottom: height * 0.025, // 2.5% bottom margin
+                marginHorizontal: width * 0.05, // 5% horizontal margin
+                paddingHorizontal: width * 0.02,
+                // backgroundColor: "rgba(255, 255, 255, 0.5)",
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-around",
                 overflow: "hidden",
-                borderWidth: 0.1,
-                borderColor: "#ffffff",
             },
+
 
         }}>
         <Tabs.Screen

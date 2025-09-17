@@ -5,9 +5,9 @@ import { useFonts, Fustat_400Regular, Fustat_700Bold } from "@expo-google-fonts/
 import CardScroller from "@/components/CardScroller";
 import * as SplashScreen from 'expo-splash-screen';
 import MemoryDisplay from "@/components/Memorybase";
-import {useEffect} from "react";
+import React, {useEffect , useCallback} from "react";
 
-SplashScreen.preventAutoHideAsync();
+// SplashScreen.preventAutoHideAsync();
 const styles = StyleSheet.create({
     textRegular: {
         fontFamily: "Fustat_400Regular",
@@ -20,8 +20,8 @@ const styles = StyleSheet.create({
         fontSize: 32,
     },
     divider: {
-        height: 0.5,
-        backgroundColor: "rgba(255,255,255,0.2)", // subtle white line
+        height: 1,
+        backgroundColor: "rgba(255,255,255,1)",
         marginTop: 12,
         marginHorizontal: -20,
     },
@@ -31,18 +31,27 @@ export default function Index() {
         Fustat_400Regular,
         Fustat_700Bold,
     });
-    useEffect(() => {
-        async function hideSplash() {
-            if (fontsLoaded) {
-                await SplashScreen.hideAsync();
-            }
-        }
-        hideSplash();
-    }, [fontsLoaded]);
-
+    // useEffect(() => {
+    //     async function hideSplash() {
+    //         if (fontsLoaded) {
+    //             await SplashScreen.hideAsync();
+    //         }
+    //     }
+    //     hideSplash();
+    // }, [fontsLoaded]);
+    //
     // if (!fontsLoaded) {
     //     return null; // render nothing until fonts are loaded
     // }
+    const onLayoutRootView = useCallback(async () => {
+        if (fontsLoaded) {
+            await SplashScreen.hideAsync();
+        }
+    }, [fontsLoaded]);
+
+    if (!fontsLoaded) {
+        return null;
+    }
   return (<SafeAreaView style={{ flex: 1 }}>
           <View className=""
       style={{
@@ -66,7 +75,14 @@ export default function Index() {
             <ScrollView vertical className="">
                 <CardScroller />
                 <View style={styles.divider} />
+                <View className="flex justify-center items-center mt-4 bg-white rounded-2xl pb-2 pt-2">
+                    <Text style={{fontFamily : "Fustat_400Regular"}} className="text-2xl font-semibold tracking-tighter">11-02-2025</Text>
+                </View>
+
                 <MemoryDisplay/>
+                <MemoryDisplay url = "https://chatgpt.com/share/68cb14bf-05bc-8003-bc27-31d77f72b1b1"/>
+                <MemoryDisplay url = "https://x.com/PoemRunning/status/1964282794924003570"/>
+                <MemoryDisplay url = "https://x.com/PoemRunning/status/1964282794924003570"/>
             </ScrollView>
 
         </View>
