@@ -24,7 +24,7 @@ const MemoryDisplay = ({ date, url, savedTime }: any) => {
             <View className="bg-white h-40 w-full rounded-3xl overflow-hidden relative">
 
                 <WebView
-                    source={{ uri: url || "https://x.com/PoemRunning/status/1968362447242412335" }}
+                    source={{ uri: url || "" }}
                     style={{ flex: 1 }}
                     showsVerticalScrollIndicator={true}
                     showsHorizontalScrollIndicator={false}
