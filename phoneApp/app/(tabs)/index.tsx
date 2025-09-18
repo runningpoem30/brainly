@@ -80,9 +80,9 @@ export default function Index() {
                 </View>
 
                 <MemoryDisplay/>
-                <MemoryDisplay url = "https://chatgpt.com/share/68cb14bf-05bc-8003-bc27-31d77f72b1b1"/>
-                <MemoryDisplay url = "https://x.com/PoemRunning/status/1964282794924003570"/>
-                <MemoryDisplay url = "https://x.com/PoemRunning/status/1964282794924003570"/>
+                <MemoryDisplay url = ""/>
+                <MemoryDisplay url = ""/>
+                <MemoryDisplay url = ""/>
             </ScrollView>
 
         </View>
