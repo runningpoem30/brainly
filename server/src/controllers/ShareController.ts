@@ -1,0 +1,2 @@
+// the user might wanto share the content , under which present are different memories 
+// so how does he do that ? . how does he gives access to that specific memory that he wants to share with the other user 

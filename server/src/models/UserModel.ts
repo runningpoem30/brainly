@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
         required : false
     },
     password : { 
-        type : String
+        tpe : String
     },
     isVerified : {
         type : Boolean ,
@@ -27,7 +27,6 @@ const userSchema = new mongoose.Schema({
     timestamps : true,
 }
 )
-
 
 export const UserModel =  mongoose.model("User" , userSchema);
 
