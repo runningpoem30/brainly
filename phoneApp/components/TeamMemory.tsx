@@ -13,9 +13,9 @@ type TeamMemoryProps = {
 }
 const TeamMemory = ({Date , Contributers , Name , Time} : TeamMemoryProps) => {
     const mockContributors = [
-        { name: "Alice", role: "Frontend Developer", email: "alice@test.com" },
-        { name: "Bob", role: "Backend Developer", email: "bob@test.com" },
-        { name: "Charlie", role: "ML Engineer", email: "charlie@test.com" },
+        { name: "Vinay", role: "Frontend Developer", email: "alice@test.com" },
+        { name: "Salvi", role: "Backend Developer", email: "bob@test.com" },
+        { name: "Nama", role: "ML Engineer", email: "charlie@test.com" },
 
     ];
     const layerCount = useState(0);

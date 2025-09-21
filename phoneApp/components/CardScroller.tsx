@@ -1,9 +1,16 @@
 // components/CardScroller.tsx
 import React from "react";
-import { ScrollView, View, StyleSheet } from "react-native";
+import { ScrollView, View, StyleSheet , TouchableOpacity } from "react-native";
 import {WebView} from "react-native-webview";
-
+import { useRouter} from "expo-router";
 export default function CardScroller() {
+    const router = useRouter();
+    const data = {
+        title: "My Image",
+        webviewUrl:
+            "https://x.com/escapevinay/status/1969126859301413011",
+    };
+    const encodedData = encodeURIComponent(JSON.stringify(data));
     return (
         <View>
         <ScrollView
@@ -11,10 +18,19 @@ export default function CardScroller() {
             showsHorizontalScrollIndicator={true}
             contentContainerStyle={styles.container}
         >
-            <View style={styles.card}>
-                <WebView source={{ uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVJPWCnWpPYDyqvpV0loSZuiI1bCPaQMN-mg&s" }}
-                         />
-            </View>
+            <TouchableOpacity
+                style={styles.card}
+                onPress={() =>
+                    router.push(`/detailsp?data=${encodedData}`)
+
+                }
+            >
+                <WebView
+                    source={{
+                        uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVJPWCnWpPYDyqvpV0loSZuiI1bCPaQMN-mg&s",
+                    }}
+                />
+            </TouchableOpacity>
             <View style={styles.card}>
                 <WebView source={{ uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpgHSO7GzRDFQ4nwbppkWvmYS5qvFlkOknKQ&s" }}
                 />
