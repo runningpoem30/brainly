@@ -1,9 +1,7 @@
 import Header from '../components/Header'
 import GetStartedButton from "../buttons/GetStartedButton"
-import { BackgroundBeamsWithCollision } from '../components/ui/background-beams-with-collision'
-import { SparklesCore } from '../components/ui/sparklex'
 import { BackgroundBeams } from '../components/ui/background-beams'
-
+import { CanvasRevealEffect } from '../components/ui/canvas-reveal-effect'
 function LandingPage() {
 
 
@@ -38,7 +36,9 @@ function LandingPage() {
   Lynkr organizes everything you save in one place — and makes it instantly searchable with AI.
 </div>
  
-
+<div>
+<CanvasRevealEffect containerClassName='bg-black'>hi there</CanvasRevealEffect>
+</div>
 
 
     
