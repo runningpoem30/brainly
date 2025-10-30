@@ -5,10 +5,10 @@ function GetStartedButton() {
   return (
     <div>
 
-      <HoverBorderGradient className=' lg:px-8 lg:py-3 rounded-xl lg:text-xl text-white'>Get Started</HoverBorderGradient>
+      <HoverBorderGradient clockwise={true} className='lg:px-8 lg:py-3 lg:text-2xl'>Get Started</HoverBorderGradient>
    
     </div>
   )
 }
 
-export default GetStartedButton
+export default GetStartedButton 
