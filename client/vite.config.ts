@@ -15,4 +15,4 @@ export default defineConfig({
 })
 
 
-//checking the git 
+//the config changes are pushed to the git 
