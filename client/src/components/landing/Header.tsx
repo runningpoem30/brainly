@@ -1,5 +1,5 @@
 import { useState } from "react";
-import LoginButtons from "../buttons/LoginButtons";
+import LoginButtons from "../../buttons/LoginButtons";
 function Header() {
  const[isOpen , setIsOpen] = useState(false);
    console.log(isOpen)

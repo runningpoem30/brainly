@@ -1,7 +1,10 @@
-import Header from '../components/Header'
+import Header from '../components/landing/Header'
 import GetStartedButton from "../buttons/GetStartedButton"
 import { BackgroundBeams } from '../components/ui/background-beams'
 import { CanvasRevealEffect } from '../components/ui/canvas-reveal-effect'
+import { GoogleGeminiEffect } from '../components/ui/google-gemini-effect'
+import LandingSection from '../components/landing/landingSection'
+import { CanvasRevealEffectDemo3 } from '../components/landing/landingTest'
 function LandingPage() {
 
 
@@ -29,20 +32,7 @@ function LandingPage() {
   <GetStartedButton/>
 </div>
 
-<div className="flex text-white lg:mt-[280px] justify-center lg:text-5xl">
-  Tired of losing links , tweets , <br></br>images , and ideas across <br></br> chats , bookmarks and tabs ?
-</div>
-<div className="text-white">
-  Lynkr organizes everything you save in one place — and makes it instantly searchable with AI.
-</div>
- 
-<div>
-<CanvasRevealEffect containerClassName='bg-black'>hi there</CanvasRevealEffect>
-</div>
-
-
-    
-    
+    <CanvasRevealEffectDemo3></CanvasRevealEffectDemo3>
   </body>
 
   )
