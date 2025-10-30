@@ -1,5 +1,8 @@
 import Header from '../components/Header'
 import GetStartedButton from "../buttons/GetStartedButton"
+import { BackgroundBeamsWithCollision } from '../components/ui/background-beams-with-collision'
+import { SparklesCore } from '../components/ui/sparklex'
+import { BackgroundBeams } from '../components/ui/background-beams'
 
 function LandingPage() {
 
@@ -7,10 +10,10 @@ function LandingPage() {
  
   return (
    <body className="bg-black">
+    <BackgroundBeams>hi there</BackgroundBeams>
     <div className="mt-[50px]">
         <Header/> 
     </div>
-
 
   <div className="flex flex-col text-white text-center justify-center lg:mt-[250px] mt-[150px] text-5xl lg:text-8xl font-light">
   <p>
@@ -34,7 +37,7 @@ function LandingPage() {
 <div className="text-white">
   Lynkr organizes everything you save in one place — and makes it instantly searchable with AI.
 </div>
-
+ 
 
 
 
