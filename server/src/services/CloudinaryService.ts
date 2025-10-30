@@ -23,7 +23,11 @@ export const uploadToCloudinary = (fileBuffer : any) => {
         }
       }
     );
+    // this is the debugging log in the cloudinary services to store photos and then convert it to a link and store it on the cloudinary service 
 
     uploadStream.end(fileBuffer);
   }); 
 };
+
+
+
