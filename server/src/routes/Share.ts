@@ -1,8 +1,12 @@
-const express = require("express")
-const app = express();
+import { Router } from "express"
+const shareRoutes = Router()
+import { shareMemory } from "../controllers/ShareController"
 
 
-app.post('/brain/share')
+shareRoutes.post('/brain/share' , shareMemory)
 
 
-app.get('/brain/:shareLink')
+//shareRoutes.get('/brain/:shareLink')
+
+
+export default shareRoutes

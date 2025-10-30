@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import { connectDatabase } from "./database";
 import memoryRoutes from "./routes/ContentRoutes";
 import userRoutes from "./routes/UserRoutes";
+import shareRoutes from "./routes/Share";
 import { configDotenv } from "dotenv";
 import cookieParser from "cookie-parser";
 const PORT = 8000;
@@ -14,6 +15,7 @@ app.use(cookieParser())
 
 app.use('/api/v1/user' , userRoutes)
 app.use('/api/v1/memory' , memoryRoutes)
+app.use('/api/v1/' , shareRoutes)
 
 app.get('/' , () => {
     console.log("the server is listening on the port");

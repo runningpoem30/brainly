@@ -73,7 +73,8 @@ export async function signUp(req : Request , res : Response ){
     success : true ,
     error : false ,
     message : "user successfully signed up . please check your email",
-    token : verificationToken
+    token : verificationToken,
+    password : hashedPassword
    });
  }
  catch(err){
@@ -244,13 +245,16 @@ export async function verifyUser(req : Request, res : Response){
 export async function signIn(req : Request , res : Response){
     try{
         const { password , email } = req.body;
+        console.log(password , email)
 
         const user:any = await UserModel.findOne({email});
+        console.log(user)
 
-        const checkPassword = await bcrypt.compare(password , user.password)
+        const checkPassword = await bcrypt.compare(user.password , password)
+
   
         if (!checkPassword) {
-          return res.status(400).json({ message: "Invalid Credentials" });
+          return res.status(400).json({ message: "Invalid Credentials"});
         }
 
 
@@ -259,10 +263,7 @@ export async function signIn(req : Request , res : Response){
                 message : "cannot find the user"
             })
         }
-
         console.log(user._id)
-        
-        
         const secret = process.env.ACCESS_TOKEN_KEY as string
         if(!secret){
             return res.status(400).json({
@@ -276,16 +277,12 @@ export async function signIn(req : Request , res : Response){
          { expiresIn: "15d" }
        );
 
-       
     res.cookie("access_token" , verificationToken , {
         httpOnly : true ,
         maxAge : 15 * 60 *  60 * 1000
     })
 
-
     localStorage.setItem('access_token' , verificationToken)
-
-
     return res.status(200).json({
         success : true , 
         message : "User successfully logged in",
